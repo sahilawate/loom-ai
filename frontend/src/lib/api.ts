@@ -1,15 +1,25 @@
-const API = "http://localhost:4000/api";
+export const API = "http://localhost:4000/api";
 
 export async function post(path: string, body: any) {
-  const res = await fetch(`${API}${path}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-  return res.json();
-}
+  try {
+    const res = await fetch(`${API}${path}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
 
-export async function get(path: string) {
-  const res = await fetch(`${API}${path}`);
-  return res.json();
+    const contentType = res.headers.get("content-type");
+    if (contentType && contentType.includes("text/html")) {
+      throw new Error("Server returned HTML. Check Backend Port.");
+    }
+
+    if (!res.ok) {
+      throw new Error(`API Error: ${res.status}`);
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error("API POST Failed:", err);
+    throw err;
+  }
 }

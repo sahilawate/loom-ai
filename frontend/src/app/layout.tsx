@@ -1,8 +1,10 @@
-import "./globals.css";
+// frontend/src/app/layout.tsx
+import './globals.css'; 
+import type { Metadata } from 'next';
 
-export const metadata = {
-  title: "Loom AI",
-  description: "AI-powered fashion commerce",
+export const metadata: Metadata = {
+  title: 'Loom AI',
+  description: 'Unified Retail Assistant',
 };
 
 export default function RootLayout({
